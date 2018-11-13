@@ -124,10 +124,6 @@ namespace FractionsLibrary
                 decimal bottomFrac = (decimal)Math.Pow(10, RepeatingDecimals.Length) - 1;
                 return (new Fraction(topFrac, bottomFrac) + new Fraction(start)).Simplify();
             }
-            /*if (approximate)
-            {//TODO: aproximate decimal as fraction (bool approximate = false, uint precision = 5)
-                ;
-            }*/
             return new Fraction(Number).Simplify();
         }
 

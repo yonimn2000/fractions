@@ -36,7 +36,10 @@ namespace FractionsLibrary
                     return false;
                 if ((Numerator > 0 && Denominator < 0) || (Numerator < 0 && Denominator < 0))
                     return false;
-                return GetBiggestCommonDenominator() == 1 && Numerator % 1 == 0 && Denominator % 1 == 0;
+                if (Numerator % 1 == 0 && Denominator % 1 == 0)
+                    if (Math.Abs(GetGreatestCommonDenominator((long)Numerator, (long)Denominator)) == 1)
+                        return true;
+                return false;
             }
         }
 
@@ -82,20 +85,18 @@ namespace FractionsLibrary
                 }
                 Numerator = Math.Round(Numerator);
                 Denominator = Math.Round(Denominator);
-                int biggestCommonDenominator = GetBiggestCommonDenominator();
+                long biggestCommonDenominator = GetGreatestCommonDenominator((long)Numerator, (long)Denominator);
                 Numerator /= biggestCommonDenominator;
                 Denominator /= biggestCommonDenominator;
             }
             return this;
         }
 
-        private int GetBiggestCommonDenominator()
+        public long GetGreatestCommonDenominator(long a, long b)
         {
-            int maxBiggestCommonDenominator = Math.Min((int)Math.Abs(Numerator), (int)Math.Abs(Denominator));// 2/4 -> min is 2, so 2/4 -> 1/2
-            for (int biggestCommonDenominator = maxBiggestCommonDenominator; biggestCommonDenominator >= 1; biggestCommonDenominator--)
-                if (Math.Abs(Numerator) % biggestCommonDenominator == 0 && Math.Abs(Denominator) % biggestCommonDenominator == 0)
-                    return biggestCommonDenominator;
-            return 1;
+            if (a == 0)
+                return b;
+            return GetGreatestCommonDenominator(b % a, a);
         }
 
         public Fraction GetReciprocal()
@@ -220,9 +221,9 @@ namespace FractionsLibrary
             newFraction.RemoveWhole();
             string output = "";
             if (Whole != 0)
-                output += Whole+" ";
+                output += Whole + " ";
             if (newFraction.Numerator != 0)
-                output += newFraction.Numerator+"/"+newFraction.Denominator;
+                output += newFraction.Numerator + "/" + newFraction.Denominator;
             if (output == "")
                 output = "0";
             return output.Trim(' ');

@@ -210,26 +210,26 @@ namespace UnitTest
             Assert.IsFalse(dn.IsRepeatingDecimal);
         }
         [TestMethod]
-        public void GetAsFraction0_Positive()
+        public void GetAsFraction0()
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(0.125m);
             Assert.AreEqual(new Fraction(1, 8), dn.GetAsFraction());
         }
         [TestMethod]
-        public void GetAsFraction1_Positive()
+        public void GetAsFraction1()
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(0.1111m, "11");
             Assert.AreEqual(new Fraction(1, 9), dn.GetAsFraction());
         }
         [TestMethod]
-        public void GetAsFraction2_Positive()
+        public void GetAsFraction2()
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(123.456m, "456");
 
             Assert.AreEqual(new Fraction(41111, 333), dn.GetAsFraction());
         }
         [TestMethod]
-        public void GetAsFraction3_Positive()
+        public void GetAsFraction3()
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(123.0456m, "45600");
             Assert.AreEqual(new Fraction(4101479, 33333), dn.GetAsFraction());
@@ -258,6 +258,12 @@ namespace UnitTest
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(-123.0456m, "45600");
             Assert.AreEqual(new Fraction(-4101479, 33333), dn.GetAsFraction());
+        }
+        [TestMethod]
+        public void GetAsFraction_Huge()
+        {
+            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(0.3529411764705882m, "3529411764705882");
+            Assert.AreEqual(new Fraction(12, 34), dn.GetAsFraction());
         }
         [TestMethod]
         public void ToScientificNotationString_Repeating()
@@ -299,12 +305,12 @@ namespace UnitTest
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.AreEqual(test.ToString()+"...", dn.ToString());
+            Assert.AreEqual(test.ToString() + "...", dn.ToString());
         }
         [TestMethod]
         public void Cast_Fraction()
         {
-            Assert.AreEqual(new Fraction(1,3), (Fraction)new RepeatingDecimalNumber(0.3m,"3"));
+            Assert.AreEqual(new Fraction(1, 3), (Fraction)new RepeatingDecimalNumber(0.3m, "3"));
         }
     }
 
@@ -460,6 +466,11 @@ namespace UnitTest
         public void Simplify()
         {
             Assert.AreEqual(new Fraction(1, 2), new Fraction(123, 246).Simplify());
+        }
+        [TestMethod]
+        public void Simplify_HugeNumber()
+        {
+            Assert.AreEqual(new Fraction(245614035087719, 33333333333333), new Fraction(736842105263157m, 99999999999999m).Simplify());
         }
         [TestMethod]
         public void Simplify_Zero()
