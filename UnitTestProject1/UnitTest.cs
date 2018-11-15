@@ -308,6 +308,13 @@ namespace UnitTest
             Assert.AreEqual("1230.0004567890456789045678...", dn.ToString());
         }
         [TestMethod]
+        public void ToString_Repeating_Negative()
+        {
+            decimal test = -001230.000456789m;
+            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test, "0456789");
+            Assert.AreEqual("-1230.000456789045678904567...", dn.ToString());
+        }
+        [TestMethod]
         public void ToString_Repeating_WithZero()
         {
             decimal test = 001230.000456789m;
@@ -383,6 +390,30 @@ namespace UnitTest
             catch (Exception) { return; }
 
             Assert.AreEqual(10, fraction.Denominator);
+        }
+        [TestMethod]
+        public void IsNegative_Numerator()
+        {
+            Fraction fraction = new Fraction(-3, 8);
+            Assert.IsTrue(fraction.IsNegative);
+        }
+        [TestMethod]
+        public void IsNegative_Denominator()
+        {
+            Fraction fraction = new Fraction(3, -8);
+            Assert.IsTrue(fraction.IsNegative);
+        }
+        [TestMethod]
+        public void IsNegative_Both()
+        {
+            Fraction fraction = new Fraction(-3, -8);
+            Assert.IsFalse(fraction.IsNegative);
+        }
+        [TestMethod]
+        public void IsNegative()
+        {
+            Fraction fraction = new Fraction(3, 8);
+            Assert.IsFalse(fraction.IsNegative);
         }
         [TestMethod]
         public void IsSimlified()
@@ -534,6 +565,11 @@ namespace UnitTest
         {
             Fraction fraction = new Fraction(-2, 3);
             Assert.AreEqual(new Fraction(9, 4), fraction.Power(-2));
+        }
+        [TestMethod]
+        public void Absolute()
+        {
+            Assert.AreEqual("2/3", new Fraction(-2, -3).Absolute().ToString());
         }
         [TestMethod]
         public void Add()
@@ -689,6 +725,11 @@ namespace UnitTest
         public void Fraction_ToMixedString()
         {
             Assert.AreEqual("3 2/3", new Fraction(11, 3).ToMixedFractionString());
+        }
+        [TestMethod]
+        public void Fraction_ToMixedString_Negative()
+        {
+            Assert.AreEqual("-3 2/3", new Fraction(-11, 3).ToMixedFractionString());
         }
         [TestMethod]
         public void Fraction_ToMixedString_Whole()

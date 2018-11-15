@@ -47,6 +47,18 @@ namespace FractionsLibrary
             }
         }
 
+        public bool IsNegative
+        {
+            get
+            {
+                if (Numerator < 0 && Denominator > 0)
+                    return true;
+                if (Numerator > 0 && Denominator < 0)
+                    return true;
+                return false;
+            }
+        }
+
         public long Whole
         {
             get
@@ -123,6 +135,11 @@ namespace FractionsLibrary
             Numerator = (decimal)Math.Pow((double)Numerator, (double)power);
             Denominator = (decimal)Math.Pow((double)Denominator, (double)power);
             return this;
+        }
+
+        public Fraction Absolute()
+        {
+            return new Fraction(Math.Abs(Numerator), Math.Abs(Denominator));
         }
 
         static public Fraction operator +(Fraction fraction1, Fraction fraction2)
@@ -224,8 +241,7 @@ namespace FractionsLibrary
 
         public string ToMixedFractionString()
         {
-            Fraction newFraction = new Fraction(Numerator, Denominator);
-            newFraction.RemoveWhole();
+            Fraction newFraction = new Fraction(Numerator, Denominator).Absolute().RemoveWhole();
             string output = "";
             if (Whole != 0)
                 output += Whole + " ";
