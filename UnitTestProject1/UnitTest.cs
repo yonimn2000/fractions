@@ -29,6 +29,13 @@ namespace UnitTest
             Assert.AreEqual(test, dn.RepeatingDecimals);
         }
         [TestMethod]
+        public void Get_RepeatingDecimal_NumberTailingZeros()
+        {
+            string test = "0049";
+            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(4560.1230004900m, test);
+            Assert.AreEqual(test, dn.RepeatingDecimals);
+        }
+        [TestMethod]
         public void Set_RepeatingDecimal()
         {
             string test = "089";
@@ -273,6 +280,13 @@ namespace UnitTest
             Assert.AreEqual("       _______" + Environment.NewLine + test, dn.ToScientificNotationString());
         }
         [TestMethod]
+        public void ToScientificNotationString_RepeatingZero()
+        {
+            decimal test = 1.01m;
+            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test, "10");
+            Assert.AreEqual("   __" + Environment.NewLine + test + "0", dn.ToScientificNotationString());
+        }
+        [TestMethod]
         public void ToScientificNotationString_NonRepeating()
         {
             decimal test = 001230.000456789m;
@@ -280,32 +294,32 @@ namespace UnitTest
             Assert.AreEqual(test.ToString(), dn.ToScientificNotationString());
         }
         [TestMethod]
-        public void ToString_Repeating5()
+        public void ToString_Repeating20()
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test, "0456789");
-            Assert.AreEqual("1230.0004567890456789045678904567890456789...", dn.ToString(5));
-        }
-        [TestMethod]
-        public void ToString_NonRepeating5()
-        {
-            decimal test = 001230.000456789m;
-            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.AreEqual(test.ToString() + "...", dn.ToString(5));
+            Assert.AreEqual("1230.000456789045...", dn.ToString(20));
         }
         [TestMethod]
         public void ToString_Repeating()
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test, "0456789");
-            Assert.AreEqual("1230.00045678904567890456789...", dn.ToString());
+            Assert.AreEqual("1230.0004567890456789045678...", dn.ToString());
+        }
+        [TestMethod]
+        public void ToString_Repeating_WithZero()
+        {
+            decimal test = 001230.000456789m;
+            RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test, "456789000");
+            Assert.AreEqual("1230.0004567890004567890004...", dn.ToString());
         }
         [TestMethod]
         public void ToString_NonRepeating()
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.AreEqual(test.ToString() + "...", dn.ToString());
+            Assert.AreEqual(test.ToString(), dn.ToString());
         }
         [TestMethod]
         public void Cast_Fraction()
@@ -375,6 +389,12 @@ namespace UnitTest
         {
             Fraction fraction = new Fraction(3, 8);
             Assert.IsTrue(fraction.IsSimplified);
+        }
+        [TestMethod]
+        public void IsSimlified_ZeroDecimal()
+        {
+            Fraction fraction = new Fraction(3.000m, 8.0m);
+            Assert.IsFalse(fraction.IsSimplified);
         }
         [TestMethod]
         public void IsNotSimlified()
@@ -478,6 +498,11 @@ namespace UnitTest
             Assert.IsTrue(new Fraction(0, 1) == new Fraction(0, 246).Simplify());
         }
         [TestMethod]
+        public void Simplify_ZeroDecimal()
+        {
+            Assert.AreEqual("1/2", new Fraction(1.000m, 2.000m).Simplify().ToString());
+        }
+        [TestMethod]
         public void Simplify_Decimal()
         {
             Assert.AreEqual(new Fraction(1, 8), new Fraction(0.125m).Simplify());
@@ -490,7 +515,7 @@ namespace UnitTest
         [TestMethod]
         public void SimplifyNegative_Denominator()
         {
-            Assert.AreEqual(new Fraction(1, -2), new Fraction(-0.5m).Simplify());
+            Assert.AreEqual("-1/2", new Fraction(1,-2).Simplify().ToString());
         }
         [TestMethod]
         public void GetReciprocal()
@@ -664,6 +689,11 @@ namespace UnitTest
         public void Fraction_ToMixedString()
         {
             Assert.AreEqual("3 2/3", new Fraction(11, 3).ToMixedFractionString());
+        }
+        [TestMethod]
+        public void Fraction_ToMixedString_Whole()
+        {
+            Assert.AreEqual("1", new Fraction(5, 5).ToMixedFractionString());
         }
         [TestMethod]
         public void Fraction_ToMixedString_NoDenominator()

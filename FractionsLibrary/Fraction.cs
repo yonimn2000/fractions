@@ -37,17 +37,21 @@ namespace FractionsLibrary
                 if ((Numerator > 0 && Denominator < 0) || (Numerator < 0 && Denominator < 0))
                     return false;
                 if (Numerator % 1 == 0 && Denominator % 1 == 0)
+                {
+                    if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
+                        return false;
                     if (Math.Abs(GetGreatestCommonDenominator((long)Numerator, (long)Denominator)) == 1)
                         return true;
+                }
                 return false;
             }
         }
 
-        public int Whole
+        public long Whole
         {
             get
             {
-                return (int)(Numerator / Denominator);
+                return (long)(Numerator / Denominator);
             }
             set
             {
@@ -63,7 +67,7 @@ namespace FractionsLibrary
 
         public Fraction RemoveWhole()
         {
-            Numerator = (int)Numerator % (int)Denominator;
+            Numerator = (long)Numerator % (long)Denominator;
             return this;
         }
 
@@ -73,30 +77,33 @@ namespace FractionsLibrary
             {
                 if (Numerator == 0 && Denominator != 1)
                     Denominator = 1;
-                if ((Numerator < 0 && Denominator < 0) || (Numerator >= 0 && Denominator < 0))
-                {
-                    Numerator *= -1;
-                    Denominator *= -1;
-                }
                 while (Numerator % 1 != 0 || Denominator % 1 != 0) //If either one is not a whole number
                 {
                     Numerator *= 10;
                     Denominator *= 10;
+                }
+                if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
+                {//Fixes 1.000 to 1
+                    Math.Round(Numerator);
+                    Math.Round(Denominator);
                 }
                 Numerator = Math.Round(Numerator);
                 Denominator = Math.Round(Denominator);
                 long biggestCommonDenominator = GetGreatestCommonDenominator((long)Numerator, (long)Denominator);
                 Numerator /= biggestCommonDenominator;
                 Denominator /= biggestCommonDenominator;
+                if ((Numerator < 0 && Denominator < 0) || (Numerator >= 0 && Denominator < 0))
+                {
+                    Numerator *= -1;
+                    Denominator *= -1;
+                }
             }
             return this;
         }
 
         public long GetGreatestCommonDenominator(long a, long b)
         {
-            if (a == 0)
-                return b;
-            return GetGreatestCommonDenominator(b % a, a);
+            return a == 0 ? b : GetGreatestCommonDenominator(b % a, a);
         }
 
         public Fraction GetReciprocal()
@@ -168,7 +175,7 @@ namespace FractionsLibrary
             return fraction.Numerator / fraction.Denominator;
         }
 
-        static public explicit operator int(Fraction fraction)
+        static public explicit operator long(Fraction fraction)
         {
             return fraction.Whole;
         }
