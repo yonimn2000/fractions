@@ -4,49 +4,34 @@ namespace FractionsLibrary
 {
     public class RepeatingDecimalNumber
     {
-        private decimal number = 0;
-        private string repeatingDecimals = "";
+        private decimal number;
+        private uint repeatingDecimalsCount;
 
         public decimal Number
         {
             get { return number; }
             set
             {
-                RepeatingDecimals = "";
+                RepeatingDecimalsCount = RepeatingDecimalsCount;
                 number = value;
             }
         }
 
-        public string RepeatingDecimals
+        public uint RepeatingDecimalsCount
         {
-            get { return repeatingDecimals; }
+            get { return repeatingDecimalsCount; }
             set
             {
-                if (IsStringValidAsRepeatingDecimals(value))
-                    repeatingDecimals = value;
+                if (IsValidRepeatingDecimalsCount(value))
+                    repeatingDecimalsCount = value;
                 else
-                    throw new Exception($"The repeating part '{value}' does not exist in the decimal number '{Number}', is located at the wrong index, or is not a whole number.");
+                    throw new Exception("Too big RepeatingDecimalCount");
             }
         }
 
-        public bool IsStringValidAsRepeatingDecimals(string repeatingInput)
+        public bool IsValidRepeatingDecimalsCount(uint count)
         {
-            return (IsStringDigitsOnly(repeatingInput) && DoesRepeatingPartExistInDecimalsPart(repeatingInput)) || repeatingInput.Equals("");
-        }
-
-        private bool IsStringDigitsOnly(string str)
-        {
-            foreach (char c in str)
-                if (c < '0' || c > '9')
-                    return false;
-            return true;
-        }
-
-        private bool DoesRepeatingPartExistInDecimalsPart(string repeatingInput)
-        {//Checks if the input number is at the end of the decimal number after removing the tailing zeros.
-            if (DecimalsString.Length < repeatingInput.TrimEnd('0').Length)
-                return false; //So it will not return 'Out of range exeption' instead of 'Does not exist'
-            return DecimalsString.LastIndexOf(repeatingInput.TrimEnd('0')) >= DecimalsString.Length - repeatingInput.TrimEnd('0').Length;
+            return DecimalsString.Length >= count;
         }
 
         /// <summary>
@@ -73,8 +58,8 @@ namespace FractionsLibrary
         public string DecimalsString
         {
             get
-            {
-                return IsWhole ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1); //Remove everything before the decimal point (including the point).
+            {   //Remove everything before the decimal point (including the point).
+                return IsWhole ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
             }
             set
             {
@@ -87,9 +72,19 @@ namespace FractionsLibrary
             }
         }
 
+        private bool IsStringDigitsOnly(string str)
+        {
+            foreach (char c in str)
+                if (c < '0' || c > '9')
+                    return false;
+            return true;
+        }
+
         public bool IsWhole { get { return Number % 1 == 0; } }
 
         public bool IsNegative { get { return Number < 0; } }
+
+        public string RepeatingPartString { get { return Number.ToString().Substring((int)(Number.ToString().Length - RepeatingDecimalsCount)); } }
 
         public ulong Whole
         {
@@ -107,24 +102,23 @@ namespace FractionsLibrary
         {
             get
             {
-                return !RepeatingDecimals.Equals("");
+                return RepeatingDecimalsCount > 0;
             }
         }
 
-        public RepeatingDecimalNumber(decimal decimalNumber, string repeatingNumbers = "")
+        public RepeatingDecimalNumber(decimal decimalNumber, uint repeatingDecimalsCount = 0)
         {
             Number = decimalNumber;
-            DecimalsString = DecimalsString.TrimEnd('0');
-            RepeatingDecimals = repeatingNumbers;
+            RepeatingDecimalsCount = repeatingDecimalsCount;
         }
 
         public Fraction GetAsFraction()
         {
             if (IsRepeatingDecimal)
-            {//According to the formula of geometric series: Sum from n=0 to infinity of ar^n is a/(1-r) or ar/(r-1).
-                decimal start = decimal.Parse(Number.ToString().Substring(0, Number.ToString().LastIndexOf(RepeatingDecimals.TrimEnd('0'))));//TrimEnd(RepeatingDecimals.ToCharArray()));
-                decimal topFrac = (Number - start) * (decimal)Math.Pow(10, RepeatingDecimals.Length);
-                decimal bottomFrac = (decimal)Math.Pow(10, RepeatingDecimals.Length) - 1;
+            {   //According to the formula of geometric series: Sum from n=0 to infinity of a*r^n is a/(1-r) or a*r/(r-1).
+                decimal start = decimal.Parse(Number.ToString().Substring(0, (int)(Number.ToString().Length - RepeatingDecimalsCount)));
+                decimal topFrac = (Number - start) * (decimal)Math.Pow(10, RepeatingDecimalsCount);
+                decimal bottomFrac = (decimal)Math.Pow(10, RepeatingDecimalsCount) - 1;
                 return (new Fraction(topFrac, bottomFrac) + new Fraction(start)).Simplify();
             }
             return new Fraction(Number).Simplify();
@@ -135,45 +129,25 @@ namespace FractionsLibrary
             return number.GetAsFraction();
         }
 
-        public uint GetNumberOfZerosInTheEndOfRepeatingDecimalNumber()
-        {
-            uint zerosCounter = 0;
-            if (IsRepeatingDecimal)
-            {
-                string newRepeatindDecimal = RepeatingDecimals;
-                while (newRepeatindDecimal.EndsWith("0"))
-                {
-                    zerosCounter++;
-                    newRepeatindDecimal = newRepeatindDecimal.Remove(newRepeatindDecimal.Length - 1);
-                }
-            }
-            return zerosCounter;
-        }
-
         public string ToScientificNotationString()
         {
             string output = "";
-            uint numberOfZerosInTheEndOfRepeatingDecimalNumber = GetNumberOfZerosInTheEndOfRepeatingDecimalNumber();
             if (IsRepeatingDecimal)
             {
-                for (int i = 0; i < Number.ToString().Length + numberOfZerosInTheEndOfRepeatingDecimalNumber; i++)
-                    output += (i < Number.ToString().Length + numberOfZerosInTheEndOfRepeatingDecimalNumber - RepeatingDecimals.Length) ? " " : "_";
+                for (int i = 0; i < Number.ToString().Length; i++)
+                    output += (i < Number.ToString().Length - RepeatingDecimalsCount) ? " " : "_";
                 output += Environment.NewLine;
             }
             output += Number.ToString();
-            for (int i = 0; i < numberOfZerosInTheEndOfRepeatingDecimalNumber; i++)
-                output += '0';
             return output;
         }
 
         public string ToString(uint numberOfCharacters)
         {
             string output = Number.ToString();
-            for (int i = 0; i < GetNumberOfZerosInTheEndOfRepeatingDecimalNumber(); i++)
-                output += '0';
             if (IsRepeatingDecimal)
-                for (int i = output.Length; i < numberOfCharacters; i += RepeatingDecimals.Length)
-                    output += RepeatingDecimals;
+                for (uint i = (uint)output.Length; i < numberOfCharacters; i += RepeatingDecimalsCount)
+                    output += RepeatingPartString;
             return IsRepeatingDecimal ? output.Substring(0, (int)numberOfCharacters - 3) + "..." : output;
         }
 

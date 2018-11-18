@@ -144,17 +144,17 @@ namespace FractionsLibrary
 
         static public Fraction operator +(Fraction fraction1, Fraction fraction2)
         {
-            return new Fraction(fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator, fraction1.Denominator * fraction2.Denominator).Simplify();
+            return new Fraction(fraction1.Numerator * fraction2.Denominator + fraction2.Numerator * fraction1.Denominator, fraction1.Denominator * fraction2.Denominator);
         }
 
         static public Fraction operator -(Fraction fraction1, Fraction fraction2)
         {
-            return new Fraction(fraction1.Numerator * fraction2.Denominator - fraction2.Numerator * fraction1.Denominator, fraction1.Denominator * fraction2.Denominator).Simplify();
+            return new Fraction(fraction1.Numerator * fraction2.Denominator - fraction2.Numerator * fraction1.Denominator, fraction1.Denominator * fraction2.Denominator);
         }
 
         static public Fraction operator *(Fraction fraction1, Fraction fraction2)
         {
-            return new Fraction(fraction1.Numerator * fraction2.Numerator, fraction1.Denominator * fraction2.Denominator).Simplify();
+            return new Fraction(fraction1.Numerator * fraction2.Numerator, fraction1.Denominator * fraction2.Denominator);
         }
 
         static public Fraction operator /(Fraction fraction1, Fraction fraction2)
