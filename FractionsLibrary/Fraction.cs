@@ -59,7 +59,7 @@ namespace FractionsLibrary
             }
         }
 
-        public long Whole
+        public decimal Whole
         {
             get
             {
@@ -67,6 +67,8 @@ namespace FractionsLibrary
             }
             set
             {
+                Absolute();
+                Simplify();
                 RemoveWhole();
                 Numerator = (value < 0 ? -1 : 1) * (Math.Abs(value) * Denominator + Numerator);
             }
@@ -194,7 +196,7 @@ namespace FractionsLibrary
 
         static public explicit operator long(Fraction fraction)
         {
-            return fraction.Whole;
+            return (long)fraction.Simplify().Whole;
         }
 
         static public bool operator ==(Fraction fraction1, Fraction fraction2)
