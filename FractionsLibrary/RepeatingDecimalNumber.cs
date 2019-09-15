@@ -4,26 +4,26 @@ namespace YonatanMankovich.FractionsLibrary
 {
     public class RepeatingDecimalNumber
     {
-        private decimal number;
-        private uint repeatingDecimalsCount;
+        private decimal _number;
+        private uint _repeatingDecimalsCount;
 
         public decimal Number
         {
-            get { return number; }
+            get { return _number; }
             set
             {
-                RepeatingDecimalsCount = RepeatingDecimalsCount;
-                number = value;
+                _number = value;
+                RepeatingDecimalsCount = RepeatingDecimalsCount; //Call the set
             }
         }
 
         public uint RepeatingDecimalsCount
         {
-            get { return repeatingDecimalsCount; }
+            get { return _repeatingDecimalsCount; }
             set
             {
                 if (IsValidRepeatingDecimalsCount(value))
-                    repeatingDecimalsCount = value;
+                    _repeatingDecimalsCount = value;
                 else
                     throw new Exception("Too big RepeatingDecimalCount");
             }
@@ -31,45 +31,41 @@ namespace YonatanMankovich.FractionsLibrary
 
         public bool IsValidRepeatingDecimalsCount(uint count)
         {
-            return DecimalsString.Length >= count;
+            return GetDecimalsString().Length >= count;
+        }
+
+        public decimal GetDecimals()
+        {
+            return Number - GetWhole();
         }
 
         /// <summary>
         /// Setting this will delete the 'RepeatingPart'
         /// </summary>
-        public decimal Decimals
+        public void SetDecimals(decimal value)
         {
-            get
-            {
-                return Number - Whole;
-            }
-            set
-            {
-                if (value < 1)
-                    Number = (IsNegative ? -1 : 1) * (Whole + value);
-                else
-                    throw new Exception("When setting decimals, the input has to be less than 1.");
-            }
+            if (value < 1)
+                Number = (GetIsNegative() ? -1 : 1) * (GetWhole() + value);
+            else
+                throw new Exception("When setting decimals, the input has to be less than 1.");
+        }
+
+        public string GetDecimalsString()
+        {   //Remove everything before the decimal point (including the point).
+            return GetIsWhole() ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
         }
 
         /// <summary>
         /// Setting this will delete the 'RepeatingPart'
         /// </summary>
-        public string DecimalsString
+        public void SetDecimalsString(string value)
         {
-            get
-            {   //Remove everything before the decimal point (including the point).
-                return IsWhole ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
-            }
-            set
-            {
-                if (!IsStringDigitsOnly(value))
-                    throw new Exception("DecimalsString must be numbers only. (Ex: '00920481')");
-                if (value != "")
-                    Number = (IsNegative ? -1 : 1) * decimal.Parse(Whole.ToString() + '.' + value);
-                else
-                    Decimals = 0;
-            }
+            if (!IsStringDigitsOnly(value))
+                throw new Exception("DecimalsString must be numbers only. (Ex: '00920481')");
+            if (value != "")
+                Number = (GetIsNegative() ? -1 : 1) * decimal.Parse(GetWhole().ToString() + '.' + value);
+            else
+                SetDecimals(0);
         }
 
         private bool IsStringDigitsOnly(string str)
@@ -80,30 +76,34 @@ namespace YonatanMankovich.FractionsLibrary
             return true;
         }
 
-        public bool IsWhole { get { return Number % 1 == 0; } }
-
-        public bool IsNegative { get { return Number < 0; } }
-
-        public string RepeatingPartString { get { return Number.ToString().Substring((int)(Number.ToString().Length - RepeatingDecimalsCount)); } }
-
-        public ulong Whole
+        public bool GetIsWhole()
         {
-            get
-            {
-                return IsWhole ? (ulong)Math.Abs(Number) : (ulong)Math.Abs(Number) / 1;
-            }
-            set
-            {
-                number = value + Decimals;
-            }
+            return Number % 1 == 0;
         }
 
-        public bool IsRepeatingDecimal
+        public bool GetIsNegative()
         {
-            get
-            {
-                return RepeatingDecimalsCount > 0;
-            }
+            return Number < 0;
+        }
+
+        public string GetRepeatingPartString()
+        {
+            return Number.ToString().Substring((int)(Number.ToString().Length - RepeatingDecimalsCount));
+        }
+
+        public ulong GetWhole()
+        {
+            return GetIsWhole() ? (ulong)Math.Abs(Number) : (ulong)Math.Abs(Number) / 1;
+        }
+
+        public void SetWhole(ulong value)
+        {
+            _number = value + GetDecimals();
+        }
+
+        public bool IsRepeatingDecimal()
+        {
+            return RepeatingDecimalsCount > 0;
         }
 
         public RepeatingDecimalNumber(decimal decimalNumber, uint repeatingDecimalsCount = 0)
@@ -114,7 +114,7 @@ namespace YonatanMankovich.FractionsLibrary
 
         public Fraction GetAsFraction()
         {
-            if (IsRepeatingDecimal)
+            if (IsRepeatingDecimal())
             {   //According to the formula of geometric series: Sum from n=0 to infinity of a*r^n is a/(1-r) or a*r/(r-1).
                 decimal start = decimal.Parse(Number.ToString().Substring(0, (int)(Number.ToString().Length - RepeatingDecimalsCount)));
                 decimal topFrac = (Number - start) * (decimal)Math.Pow(10, RepeatingDecimalsCount);
@@ -129,10 +129,10 @@ namespace YonatanMankovich.FractionsLibrary
             return number.GetAsFraction();
         }
 
-        public string ToScientificNotationString()
+        public string ToLineNotationString()
         {
             string output = "";
-            if (IsRepeatingDecimal)
+            if (IsRepeatingDecimal())
             {
                 for (int i = 0; i < Number.ToString().Length; i++)
                     output += (i < Number.ToString().Length - RepeatingDecimalsCount) ? " " : "_";
@@ -145,10 +145,10 @@ namespace YonatanMankovich.FractionsLibrary
         public string ToString(uint numberOfCharacters)
         {
             string output = Number.ToString();
-            if (IsRepeatingDecimal)
+            if (IsRepeatingDecimal())
                 for (uint i = (uint)output.Length; i < numberOfCharacters; i += RepeatingDecimalsCount)
-                    output += RepeatingPartString;
-            return IsRepeatingDecimal ? output.Substring(0, (int)numberOfCharacters - 3) + "..." : output;
+                    output += GetRepeatingPartString();
+            return IsRepeatingDecimal() ? output.Substring(0, (int)numberOfCharacters - 3) + "..." : output;
         }
 
         public override string ToString()

@@ -4,71 +4,66 @@ namespace YonatanMankovich.FractionsLibrary
 {
     public class Fraction
     {
-        private decimal denominator;
+        private decimal _denominator;
+
         public decimal Numerator { get; set; }
         public decimal Denominator
         {
-            get { return denominator; }
+            get { return _denominator; }
             set
             {
                 if (value == 0)
                     throw new DivideByZeroException("The denominator cannot be zero.");
-                denominator = value;
+                _denominator = value;
             }
         }
 
         public Fraction(decimal numerator, decimal denominator = 1)
         {
-            this.Numerator = numerator;
-            this.Denominator = denominator;
+            Numerator = numerator;
+            Denominator = denominator;
         }
 
-        public bool IsSimplified
+        public Fraction(Fraction fraction) : this(fraction.Numerator, fraction.Denominator) { }
+
+        public bool IsSimplified()
         {
-            get
-            {
-                if (Numerator == 0 && Denominator == 1)
-                    return true;
-                if (Numerator == 0 && Denominator != 1)
-                    return false;
-                if ((Numerator > 0 && Denominator < 0) || (Numerator < 0 && Denominator < 0))
-                    return false;
-                if (Numerator % 1 == 0 && Denominator % 1 == 0)
-                {
-                    if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
-                        return false;
-                    if (Math.Abs(GetGreatestCommonDenominator((long)Numerator, (long)Denominator)) == 1)
-                        return true;
-                }
+            if (Numerator == 0 && Denominator == 1)
+                return true;
+            if (Numerator == 0 && Denominator != 1)
                 return false;
-            }
-        }
-
-        public bool IsNegative
-        {
-            get
-            {
-                if (Numerator < 0 && Denominator > 0)
-                    return true;
-                if (Numerator > 0 && Denominator < 0)
-                    return true;
+            if ((Numerator > 0 && Denominator < 0) || (Numerator < 0 && Denominator < 0))
                 return false;
+            if (Numerator % 1 == 0 && Denominator % 1 == 0)
+            {
+                if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
+                    return false;
+                if (Math.Abs(GetGreatestCommonDenominator((long)Numerator, (long)Denominator)) == 1)
+                    return true;
             }
+            return false;
         }
 
-        public decimal Whole
+        public bool IsNegative()
         {
-            get
-            {
-                return (long)(Numerator / Denominator);
-            }
-            set
-            {
-                Absolute();
-                Simplify();
-                RemoveWhole();
-                Numerator = (value < 0 ? -1 : 1) * (Math.Abs(value) * Denominator + Numerator);
-            }
+            if (Numerator < 0 && Denominator > 0)
+                return true;
+            if (Numerator > 0 && Denominator < 0)
+                return true;
+            return false;
+        }
+
+        public decimal GetWhole()
+        {
+            return (long)(Numerator / Denominator);
+        }
+
+        public void SetWhole(decimal whole)
+        {
+            Absolute();
+            Simplify();
+            RemoveWhole();
+            Numerator = (whole < 0 ? -1 : 1) * (Math.Abs(whole) * Denominator + Numerator);
         }
 
         public Fraction GetFractionWithoutWhole()
@@ -84,7 +79,7 @@ namespace YonatanMankovich.FractionsLibrary
 
         public Fraction Simplify()
         {
-            if (!IsSimplified)
+            if (!IsSimplified())
             {
                 if (Numerator == 0 && Denominator != 1)
                     Denominator = 1;
@@ -93,11 +88,7 @@ namespace YonatanMankovich.FractionsLibrary
                     Numerator *= 10;
                     Denominator *= 10;
                 }
-                if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
-                {//Fixes 1.000 to 1
-                    Math.Round(Numerator);
-                    Math.Round(Denominator);
-                }
+                //Fix 1.000 to 1
                 Numerator = Math.Round(Numerator);
                 Denominator = Math.Round(Denominator);
                 long biggestCommonDenominator = GetGreatestCommonDenominator((long)Numerator, (long)Denominator);
@@ -114,31 +105,42 @@ namespace YonatanMankovich.FractionsLibrary
 
         public long GetGreatestCommonDenominator(long a, long b)
         {
+            // The Euclidean algorithm:
             return a == 0 ? b : GetGreatestCommonDenominator(b % a, a);
+        }
+
+        public Fraction Reciprocate()
+        {
+            decimal temp = Numerator;
+            Numerator = Denominator;
+            Denominator = temp;
+            return this;
         }
 
         public Fraction GetReciprocal()
         {
-            return new Fraction(Denominator, Numerator);
+            return new Fraction(Reciprocate());
         }
 
-        public Fraction Power(decimal power)
+        public Fraction Exponenciate(decimal exponent)
         {
-            if (power < 0)
+            if (exponent < 0)
             {
                 Fraction reciprocal = GetReciprocal();
                 Numerator = reciprocal.Numerator;
                 Denominator = reciprocal.Denominator;
-                power *= -1;
+                exponent *= -1;
             }
-            Numerator = (decimal)Math.Pow((double)Numerator, (double)power);
-            Denominator = (decimal)Math.Pow((double)Denominator, (double)power);
+            Numerator = (decimal)Math.Pow((double)Numerator, (double)exponent);
+            Denominator = (decimal)Math.Pow((double)Denominator, (double)exponent);
             return this;
         }
 
         public Fraction Absolute()
         {
-            return new Fraction(Math.Abs(Numerator), Math.Abs(Denominator));
+            Numerator = Math.Abs(Numerator);
+            Denominator = Math.Abs(Denominator);
+            return this;
         }
 
         static public Fraction operator +(Fraction fraction1, Fraction fraction2)
@@ -193,7 +195,7 @@ namespace YonatanMankovich.FractionsLibrary
 
         static public explicit operator long(Fraction fraction)
         {
-            return (long)fraction.Simplify().Whole;
+            return (long)fraction.Simplify().GetWhole();
         }
 
         static public bool operator ==(Fraction fraction1, Fraction fraction2)
@@ -242,8 +244,8 @@ namespace YonatanMankovich.FractionsLibrary
         {
             Fraction newFraction = new Fraction(Numerator, Denominator).Absolute().RemoveWhole();
             string output = "";
-            if (Whole != 0)
-                output += Whole + " ";
+            if (GetWhole() != 0)
+                output += GetWhole() + " ";
             if (newFraction.Numerator != 0)
                 output += newFraction.Numerator + "/" + newFraction.Denominator;
             if (output == "")

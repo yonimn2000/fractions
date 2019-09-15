@@ -4,9 +4,11 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>YonatanMankovich.FractionsLibrary</RootNamespace>
     <AssemblyName>YonatanMankovich.FractionsLibrary</AssemblyName>
-    <Version>2.1</Version>
+    <Version>3</Version>
     <Authors>Yonatan Mankovich</Authors>
     <Copyright>© 2018 Yonatan Mankovich</Copyright>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
 
 </Project>
