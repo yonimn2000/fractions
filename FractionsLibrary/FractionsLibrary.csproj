@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <RootNamespace>YonatanMankovich.FractionsLibrary</RootNamespace>
+    <AssemblyName>YonatanMankovich.FractionsLibrary</AssemblyName>
+    <Version>2.1</Version>
+    <Authors>Yonatan Mankovich</Authors>
+    <Copyright>© 2018 Yonatan Mankovich</Copyright>
   </PropertyGroup>
 
 </Project>

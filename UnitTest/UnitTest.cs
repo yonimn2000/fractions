@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FractionsLibrary;
+using YonatanMankovich.FractionsLibrary;
 
 namespace UnitTest
 {

@@ -1,12 +1,9 @@
 ﻿using System;
-/// <summary>
-/// Created by Yonatan Mankovich on 11/11/2018
-/// </summary>
-namespace FractionsLibrary
+
+namespace YonatanMankovich.FractionsLibrary
 {
     public class Fraction
     {
-
         private decimal denominator;
         public decimal Numerator { get; set; }
         public decimal Denominator
