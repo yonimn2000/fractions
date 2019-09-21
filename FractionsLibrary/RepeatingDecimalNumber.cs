@@ -29,9 +29,25 @@ namespace YonatanMankovich.FractionsLibrary
             }
         }
 
+        public RepeatingDecimalNumber(decimal decimalNumber, uint repeatingDecimalsCount = 0)
+        {
+            Number = decimalNumber;
+            RepeatingDecimalsCount = repeatingDecimalsCount;
+        }
+
         public bool IsValidRepeatingDecimalsCount(uint count)
         {
-            return GetDecimalsString().Length >= count;
+            return GetDecimalsLength() >= count;
+        }
+
+        public int GetDecimalsLength()
+        {
+            return GetDecimalsString().Length;
+        }
+
+        public string GetDecimalsString()
+        {   //Remove everything before the decimal point (including the point).
+            return GetIsWhole() ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
         }
 
         public decimal GetDecimals()
@@ -40,7 +56,7 @@ namespace YonatanMankovich.FractionsLibrary
         }
 
         /// <summary>
-        /// Setting this will delete the 'RepeatingPart'
+        /// Setting this will delete the 'RepeatingPart' 
         /// </summary>
         public void SetDecimals(decimal value)
         {
@@ -48,11 +64,6 @@ namespace YonatanMankovich.FractionsLibrary
                 Number = (GetIsNegative() ? -1 : 1) * (GetWhole() + value);
             else
                 throw new Exception("When setting decimals, the input has to be less than 1.");
-        }
-
-        public string GetDecimalsString()
-        {   //Remove everything before the decimal point (including the point).
-            return GetIsWhole() ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
         }
 
         /// <summary>
@@ -104,12 +115,6 @@ namespace YonatanMankovich.FractionsLibrary
         public bool IsRepeatingDecimal()
         {
             return RepeatingDecimalsCount > 0;
-        }
-
-        public RepeatingDecimalNumber(decimal decimalNumber, uint repeatingDecimalsCount = 0)
-        {
-            Number = decimalNumber;
-            RepeatingDecimalsCount = repeatingDecimalsCount;
         }
 
         public Fraction GetAsFraction()
