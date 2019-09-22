@@ -18,7 +18,7 @@ namespace YonatanMankovich.Fractions
                 //Fix 1.000 to 1
                 Numerator = Math.Round(Numerator);
                 Denominator = Math.Round(Denominator);
-                long biggestCommonDenominator = GetGreatestCommonDenominator((long)Numerator, (long)Denominator);
+                long biggestCommonDenominator = GetGreatestCommonDenominator();
                 Numerator /= biggestCommonDenominator;
                 Denominator /= biggestCommonDenominator;
                 if ((Numerator < 0 && Denominator < 0) || (Numerator >= 0 && Denominator < 0))
@@ -33,7 +33,12 @@ namespace YonatanMankovich.Fractions
         /// <summary>
         /// Uses the Euclidean algorithm.
         /// </summary>
-        public long GetGreatestCommonDenominator(long a, long b)
+        public long GetGreatestCommonDenominator()
+        {
+            return GetGreatestCommonDenominator((long)Numerator, (long)Denominator);
+        }
+
+        private long GetGreatestCommonDenominator(long a, long b)
         {
             return a == 0 ? b : GetGreatestCommonDenominator(b % a, a);
         }

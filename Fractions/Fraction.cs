@@ -38,7 +38,7 @@ namespace YonatanMankovich.Fractions
             {
                 if (Numerator.ToString().IndexOf('.') != -1 || Denominator.ToString().IndexOf('.') != -1)
                     return false;
-                if (Math.Abs(GetGreatestCommonDenominator((long)Numerator, (long)Denominator)) == 1)
+                if (Math.Abs(GetGreatestCommonDenominator()) == 1)
                     return true;
             }
             return false;
