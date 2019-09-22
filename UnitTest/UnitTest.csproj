@@ -8,8 +8,8 @@
     <ProjectGuid>{4DA83053-91A8-45A7-BC01-D929B3A5FE01}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTestProject1</RootNamespace>
-    <AssemblyName>UnitTestProject1</AssemblyName>
+    <RootNamespace>YonatanMankovich.Fractions.UnitTest</RootNamespace>
+    <AssemblyName>YonatanMankovich.Fractions.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -20,6 +20,7 @@
     <TestProjectType>UnitTest</TestProjectType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,16 +50,21 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest.cs" />
+    <Compile Include="FractionsUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepeatingDecimalNumberUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FractionsLibrary\FractionsLibrary.csproj">
+    <ProjectReference Include="..\Fractions\Fractions.csproj">
       <Project>{159bd509-026f-4fb2-b51d-0c92e7f786b4}</Project>
-      <Name>FractionsLibrary</Name>
+      <Name>Fractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RepeatingDecimalNumber\RepeatingDecimalNumber.csproj">
+      <Project>{9b490a70-5f7d-4ef3-b8b6-144ca2b72c8f}</Project>
+      <Name>RepeatingDecimalNumber</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

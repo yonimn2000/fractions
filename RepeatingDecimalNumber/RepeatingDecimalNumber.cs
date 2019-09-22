@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YonatanMankovich.FractionsLibrary
+namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
 {
     public class RepeatingDecimalNumber
     {
