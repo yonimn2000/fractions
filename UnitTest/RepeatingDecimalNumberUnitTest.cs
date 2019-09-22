@@ -303,7 +303,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         public void GetAsFraction_Huge()
         {
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(0.3529411764705882m, 16);
-            Assert.AreEqual(new Fraction(12, 34), dn.GetAsFraction());
+            Assert.AreEqual(new Fraction(6, 17), dn.GetAsFraction());
         }
 
         [TestMethod]

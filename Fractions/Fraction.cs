@@ -77,10 +77,18 @@ namespace YonatanMankovich.Fractions
             return this;
         }
 
+        public bool Equivalent(Fraction fraction)
+        {
+            return (decimal)this == (decimal)fraction;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is Fraction)
-                return (decimal)this == (decimal)(Fraction)obj;
+            {
+                Fraction fraction = (Fraction)obj;
+                return Numerator == fraction.Numerator && Denominator == fraction.Denominator;
+            }
             return false;
         }
 

@@ -223,7 +223,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         [TestMethod]
         public void Simplify_Zero()
         {
-            Assert.IsTrue(new Fraction(0, 1) == new Fraction(0, 246).Simplify());
+            Assert.IsTrue(new Fraction(0, 1).Equivalent(new Fraction(0, 246).Simplify()));
         }
 
         [TestMethod]
@@ -398,27 +398,27 @@ namespace YonatanMankovich.Fractions.UnitTest
         }
 
         [TestMethod]
-        public void Comparison_Equals_Sign()
+        public void Comparison_Equvalent()
         {
-            Assert.IsTrue(new Fraction(5, 2) == new Fraction(5, 2));
+            Assert.IsTrue(new Fraction(15, 2).Equivalent(new Fraction(60, 8)));
         }
 
         [TestMethod]
-        public void Comparison_NotEquals_Sign()
+        public void Comparison_Equvalent2()
         {
-            Assert.IsTrue(new Fraction(10, 20) != new Fraction(5, 10));
+            Assert.IsTrue(new Fraction(5, 10).Equivalent(new Fraction(5, 10)));
         }
 
         [TestMethod]
         public void Comparison_Equals()
         {
-            Assert.IsTrue(new Fraction(15, 2).Equals(new Fraction(60, 8)));
+            Assert.IsTrue(new Fraction(5, 2).Equals(new Fraction(5, 2)));
         }
 
         [TestMethod]
         public void Comparison_NotEquals()
         {
-            Assert.IsFalse(new Fraction(19, 8).Equals(new Fraction(20, 8)));
+            Assert.IsFalse(new Fraction(10, 4).Equals(new Fraction(20, 8)));
         }
 
         [TestMethod]

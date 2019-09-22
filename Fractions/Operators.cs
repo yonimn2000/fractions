@@ -57,16 +57,6 @@
             return (long)fraction.Simplify().GetWhole();
         }
 
-        static public bool operator ==(Fraction fraction1, Fraction fraction2)
-        {
-            return fraction1.Numerator == fraction2.Numerator && fraction1.Denominator == fraction2.Denominator;
-        }
-
-        static public bool operator !=(Fraction fraction1, Fraction fraction2)
-        {
-            return !(fraction1 == fraction2);
-        }
-
         static public bool operator <(Fraction fraction1, Fraction fraction2)
         {
             return (decimal)fraction1 < (decimal)fraction2;
