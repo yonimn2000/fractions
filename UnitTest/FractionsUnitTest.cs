@@ -7,6 +7,13 @@ namespace YonatanMankovich.Fractions.UnitTest
     public class FractionsTest
     {
         [TestMethod]
+        public void WholeCtor()
+        {
+            Fraction fraction = new Fraction(5, 3, 8);
+            Assert.AreEqual(new Fraction(43, 8), fraction);
+        }
+
+        [TestMethod]
         public void Get_Numerator()
         {
             Fraction fraction = new Fraction(3, 8);

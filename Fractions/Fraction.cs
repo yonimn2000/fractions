@@ -24,6 +24,8 @@ namespace YonatanMankovich.Fractions
             Denominator = denominator;
         }
 
+        public Fraction(decimal whole, decimal numerator, decimal denominator) : this(denominator * whole + numerator, denominator) { }
+
         public Fraction(Fraction fraction) : this(fraction.Numerator, fraction.Denominator) { }
 
         public Fraction() : this(0) { }
@@ -70,7 +72,7 @@ namespace YonatanMankovich.Fractions
 
         public Fraction GetFractionWithoutWhole()
         {
-            return new Fraction(Numerator, Denominator).RemoveWhole();
+            return new Fraction(this).RemoveWhole();
         }
 
         public Fraction RemoveWhole()
