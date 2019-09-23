@@ -157,7 +157,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         {
             decimal test = 001230.000m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.IsTrue(dn.GetIsWhole());
+            Assert.IsTrue(dn.IsWhole());
         }
 
         [TestMethod]
@@ -165,7 +165,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.IsFalse(dn.GetIsWhole());
+            Assert.IsFalse(dn.IsWhole());
         }
 
         [TestMethod]
@@ -173,7 +173,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         {
             decimal test = -001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.IsTrue(dn.GetIsNegative());
+            Assert.IsTrue(dn.IsNegative());
         }
 
         [TestMethod]
@@ -181,7 +181,7 @@ namespace YonatanMankovich.Fractions.UnitTest
         {
             decimal test = 001230.000456789m;
             RepeatingDecimalNumber dn = new RepeatingDecimalNumber(test);
-            Assert.IsFalse(dn.GetIsNegative());
+            Assert.IsFalse(dn.IsNegative());
         }
 
         [TestMethod]

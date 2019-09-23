@@ -13,7 +13,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
             set
             {
                 _number = value;
-                RepeatingDecimalsCount = RepeatingDecimalsCount; //Call the set
+                RepeatingDecimalsCount = RepeatingDecimalsCount; //Call the setter
             }
         }
 
@@ -47,7 +47,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
 
         public string GetDecimalsString()
         {   //Remove everything before the decimal point (including the point).
-            return GetIsWhole() ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
+            return IsWhole() ? "" : Number.ToString().Substring(Number.ToString().IndexOf('.') + 1);
         }
 
         public decimal GetDecimals()
@@ -61,7 +61,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
         public void SetDecimals(decimal value)
         {
             if (value < 1)
-                Number = (GetIsNegative() ? -1 : 1) * (GetWhole() + value);
+                Number = (IsNegative() ? -1 : 1) * (GetWhole() + value);
             else
                 throw new Exception("When setting decimals, the input has to be less than 1.");
         }
@@ -74,7 +74,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
             if (!IsStringDigitsOnly(value))
                 throw new Exception("DecimalsString must be numbers only. (Ex: '00920481')");
             if (value != "")
-                Number = (GetIsNegative() ? -1 : 1) * decimal.Parse(GetWhole().ToString() + '.' + value);
+                Number = (IsNegative() ? -1 : 1) * decimal.Parse(GetWhole().ToString() + '.' + value);
             else
                 SetDecimals(0);
         }
@@ -87,12 +87,12 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
             return true;
         }
 
-        public bool GetIsWhole()
+        public bool IsWhole()
         {
             return Number % 1 == 0;
         }
 
-        public bool GetIsNegative()
+        public bool IsNegative()
         {
             return Number < 0;
         }
@@ -104,7 +104,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
 
         public ulong GetWhole()
         {
-            return GetIsWhole() ? (ulong)Math.Abs(Number) : (ulong)Math.Abs(Number) / 1;
+            return IsWhole() ? (ulong)Math.Abs(Number) : (ulong)Math.Abs(Number) / 1;
         }
 
         public void SetWhole(ulong value)
@@ -120,7 +120,7 @@ namespace YonatanMankovich.Fractions.RepeatingDecimalNumbers
         public Fraction GetAsFraction()
         {
             if (IsRepeatingDecimal())
-            {   //According to the formula of geometric series: Sum from n=0 to infinity of a*r^n is a/(1-r) or a*r/(r-1).
+            {   //According to the formula of geometric series: Sum from n=0 to infinity of a*r^n = a/(1-r) = a*r/(r-1).
                 decimal start = decimal.Parse(Number.ToString().Substring(0, (int)(Number.ToString().Length - RepeatingDecimalsCount)));
                 decimal topFrac = (Number - start) * (decimal)Math.Pow(10, RepeatingDecimalsCount);
                 decimal bottomFrac = (decimal)Math.Pow(10, RepeatingDecimalsCount) - 1;
