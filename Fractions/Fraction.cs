@@ -26,6 +26,8 @@ namespace YonatanMankovich.Fractions
 
         public Fraction(Fraction fraction) : this(fraction.Numerator, fraction.Denominator) { }
 
+        public Fraction() : this(0) { }
+
         public bool IsSimplified()
         {
             if (Numerator == 0 && Denominator == 1)
