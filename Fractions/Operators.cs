@@ -54,7 +54,7 @@
 
         static public explicit operator long(Fraction fraction)
         {
-            return (long)fraction.Simplify().GetWhole();
+            return (long)new Fraction(fraction).Simplify().GetWhole();
         }
 
         static public bool operator <(Fraction fraction1, Fraction fraction2)

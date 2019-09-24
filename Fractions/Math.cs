@@ -53,7 +53,7 @@ namespace YonatanMankovich.Fractions
 
         public Fraction GetReciprocal()
         {
-            return new Fraction(Reciprocate());
+            return new Fraction(this).Reciprocate();
         }
 
         public Fraction Exponenciate(decimal exponent)
