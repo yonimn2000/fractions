@@ -111,4 +111,4 @@ rdn.IsRepeatingDecimal(); // True
 
 ## A Working Example
 
-A working tool that uses this library can be found [here](https://github.com/yonimn2000/fractions-calculator).
+My [Fractions Calculator](https://github.com/yonimn2000/fractions-calculator) tool uses this library.
