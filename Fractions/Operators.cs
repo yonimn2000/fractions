@@ -76,14 +76,5 @@
         {
             return (decimal)fraction1 >= (decimal)fraction2;
         }
-
-        static public bool operator ==(Fraction fraction1, Fraction fraction2) 
-        {
-            return (fraction1.Numerator / fraction1.Denominator) == (fraction2.Numerator / fraction2.Denominator);
-        }
-        static public bool operator !=(Fraction fraction1, Fraction fraction2) 
-        {
-            return (fraction1.Numerator / fraction1.Denominator) != (fraction2.Numerator / fraction2.Denominator);
-        }
     }
 }
