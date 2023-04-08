@@ -1,8 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using YonatanMankovich.Fractions.RepeatingDecimalNumbers;
-
-namespace YonatanMankovich.Fractions.UnitTest
+﻿namespace YonatanMankovich.Fractions.UnitTest
 {
     [TestClass]
     public class RepeatingDecimalNumberTest

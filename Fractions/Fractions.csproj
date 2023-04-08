@@ -4,11 +4,24 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>YonatanMankovich.Fractions</RootNamespace>
     <AssemblyName>YonatanMankovich.Fractions</AssemblyName>
-    <Version>3</Version>
+    <Version>3.1</Version>
     <Authors>Yonatan Mankovich</Authors>
     <Copyright>© 2018 Yonatan Mankovich</Copyright>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
-    <FileVersion>3.0.0.0</FileVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>YonatanMankovich.Fractions</PackageId>
+    <Title>YonatanMankovich.Fractions</Title>
+    <Description>A simple library to work with fractions and repeating decimal numbers.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/yonimn2000/fractions</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

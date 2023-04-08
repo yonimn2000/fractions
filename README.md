@@ -1,5 +1,8 @@
 # Fractions Library
 
+[![.NuGet Publish](https://github.com/yonimn2000/fractions/actions/workflows/nuget-publish.yml/badge.svg)](https://github.com/yonimn2000/fractions/actions/workflows/nuget-publish.yml)
+[![NuGet](https://img.shields.io/nuget/v/YonatanMankovich.Fractions.svg)](https://www.nuget.org/packages/YonatanMankovich.Fractions)
+
 A simple library to work with fractions and repeating decimal numbers.
 
 ## Usage

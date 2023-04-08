@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace YonatanMankovich.Fractions.UnitTest
+﻿namespace YonatanMankovich.Fractions.UnitTest
 {
     [TestClass]
     public class FractionsTest
