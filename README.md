@@ -45,11 +45,31 @@ Fraction resultFraction = fraction1 + fraction2; // "7/8"
 Fraction anotherResultFraction = fraction2 + 2; // "5/2"
 ```
 
+#### Equality Comparison
+
+* Use `f1 == f2` to check if the variables reference the same `Fraction` object.
+* Use `f1.Equals(f2)` to check if the numerator is the same as the denominator. E.g., `5/10` is equal to `5/10` but does not equal to `15/30`.
+* Use `f1.Equivalent(f2)` to check if the values match. E.g., `5/10` is equivalent to `15/30`.
+
+##### Examples of `==`, `Equals`, and `Equivalent`
+
+```cs
+Fraction f1 = new Fraction(2, 3);
+Fraction f2 = f1;
+Fraction f3 = new Fraction(2, 3);
+Fraction f4 = new Fraction(4, 6);
+
+f1 == f2; // true
+f1 == f3; // false
+f1.Equals(f3); // true
+f1.Equals(f4); // false
+f1.Equivalent(f3); // true
+f1.Equivalent(f4); // true
+```
+
 #### Comparison Operators and Methods
 
 Use the `<`, `>`, `<=`, and `>=` operators, and the `Equals`, and `Equivalent` methods.
-
-**`Equal` compares the numerators and the denominators of two fractions, whereas `Equivalent` compares the values of the two:** `5/10` is equivalent, but not equal to `15/30`.
 
 ##### Example with `<`
 
